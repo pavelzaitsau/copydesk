@@ -1,0 +1,45 @@
+{
+  "skill_name": "markdown-formatting",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "this table drops text on github and i can't see why:\n\nSome intro text\n| Flag | Meaning |\n|---|---|\n| -v | verbose |\n| -r | recurse | into subdirs |",
+      "expected_output": "One defect breaks rendering: the last row has three cells against a two-cell header, so `into subdirs` is dropped. The missing blank line before the table is a portability fix, not the cause on GitHub.",
+      "assertions": [
+        "The three-cell row is identified as the cause, and `into subdirs` as the text that disappears",
+        "The fix escapes the literal pipe as `\\|` or restructures the row",
+        "A blank line is added before the table, without claiming that its absence breaks rendering on GitHub",
+        "A corrected table is produced with three hyphens per column in the delimiter row"
+      ],
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "write me a README for a small cli tool called 'tarp' that archives a directory and uploads it to s3",
+      "expected_output": "A README that passes markdownlint: one H1 first, blank lines around every block, fenced code with a language, no bare URLs.",
+      "assertions": [
+        "The file opens with a single `#` heading on the first line",
+        "Every fenced code block declares a language",
+        "Every list and table is preceded and followed by a blank line",
+        "Heading levels descend one at a time",
+        "No image or link is produced with empty text or a bare URL"
+      ],
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "clean up the formatting in this doc, don't touch the wording:\n\nSetup\n=====\n* install it\n* run it\n```\nnpm i\n```\n####Notes\nsee https://example.com for more",
+      "expected_output": "A rewrite fixing heading style, the skipped level, the missing blank lines, the missing fence language and the bare URL, with the wording unchanged.",
+      "assertions": [
+        "The setext heading is converted to ATX",
+        "The `####` heading is corrected to the next level down from the first heading",
+        "A space is added after the hashes",
+        "The fence declares a language",
+        "The bare URL is wrapped in angle brackets or turned into a link",
+        "Blank lines separate the list, the fence and the headings",
+        "No word of the original prose is changed"
+      ],
+      "files": []
+    }
+  ]
+}
