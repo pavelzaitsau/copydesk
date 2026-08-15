@@ -1,0 +1,70 @@
+# Both gates on every push to `main` and every pull request. They are the same
+# two commands `scripts/gates.sh` runs locally, so a green run here means a
+# green run there.
+# A pull request also runs the commit and branch hooks, in the job below.
+name: gates
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  gates:
+    # Pinned, not `ubuntu-latest`: that label moves to Ubuntu 26 on 2026-10-19.
+    # A build that changes underneath nobody's commit is a build nobody trusts.
+    # The actions and the Vale version below are pinned for the same reason.
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7.0.1
+
+      # Vale ships as a Go binary and is pinned, because a style rule that
+      # changes meaning between versions fails a build nobody touched.
+      - name: install vale
+        env:
+          VALE_VERSION: 3.20.0
+        run: |
+          curl -fsSL "https://github.com/errata-ai/vale/releases/download/v${VALE_VERSION}/vale_${VALE_VERSION}_Linux_64-bit.tar.gz" \
+            | tar -xz -C /usr/local/bin vale
+          vale --version
+
+      # 24 and not 20: markdownlint-cli2 declares `node >= 22`, and the runner
+      # itself now runs every action on Node 24.
+      - uses: actions/setup-node@v7.1.0
+        with:
+          node-version: '24'
+
+      - name: gates
+        run: scripts/gates.sh
+
+  # The local hooks guard a clone where someone ran `git config core.hooksPath
+  # .githooks`. A pull request from any other clone reaches `main` unchecked,
+  # so the same two scripts run here over what the pull request brings.
+  history:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: branch name
+        env:
+          BRANCH: ${{ github.head_ref }}
+        run: branch-names/scripts/branch-name.sh --check "$BRANCH"
+
+      - name: commit messages
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          fail=0
+          for sha in $(git rev-list --no-merges "$BASE..$HEAD"); do
+            git log -1 --format=%B "$sha" > "$RUNNER_TEMP/msg"
+            echo "$sha $(head -n 1 "$RUNNER_TEMP/msg")"
+            commit-messages/scripts/commit-msg "$RUNNER_TEMP/msg" || fail=1
+          done
+          exit "$fail"

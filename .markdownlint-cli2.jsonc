@@ -1,0 +1,20 @@
+// The structure gate for this repository. Run it from the repository root:
+//
+//   scripts/gates.sh
+//
+// The rules come from the markdown-formatting skill and are not repeated here.
+// The custom rule is named here for the reason
+// markdown-formatting/assets/.markdownlint-cli2.jsonc gives.
+{
+  "config": { "extends": "markdown-formatting/assets/.markdownlint.jsonc" },
+  "customRules": ["markdown-formatting/assets/rules/table-row-outside-table.js"],
+  "globs": ["**/*.md"],
+
+  "ignores": [
+    // Symlinks back into this repository; scripts/gates.sh says why they are skipped.
+    ".claude/**",
+    // Build output, and gitignored.
+    "dist/**",
+    "node_modules/**"
+  ]
+}
