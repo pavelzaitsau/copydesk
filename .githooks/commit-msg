@@ -1,0 +1,4 @@
+#!/bin/sh
+# Every commit here follows the commit-messages skill, including the ones
+# that add it. Enabled by: git config core.hooksPath .githooks
+exec "$(dirname "$0")/../commit-messages/scripts/commit-msg" "$@"
