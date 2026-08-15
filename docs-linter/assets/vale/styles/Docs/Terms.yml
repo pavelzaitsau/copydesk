@@ -1,0 +1,9 @@
+# Project terminology. Generate this file from the project's term list. The
+# term registry in the technical-writing skill's references/vocabulary.md says why.
+#
+# Left side: the wording to ban. Right side: the canonical term.
+extends: substitution
+message: "Project term: use '%s', not '%s'."
+level: error
+ignorecase: true
+swap: {}
