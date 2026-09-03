@@ -1,0 +1,47 @@
+#!/bin/sh
+# Reject a push of a branch whose name is off the convention. Install, skip
+# and failure behaviour: branch-names/SKILL.md, section Enforcement.
+#
+# git feeds one line per ref on stdin:
+#   <local ref> <local sha> <remote ref> <remote sha>
+# A delete arrives with an all-zero local sha and is let through: 40 zeros in
+# a SHA-1 repository, 64 in a SHA-256 one.
+set -u
+
+[ "${SKIP_BRANCH_CHECK:-0}" = "1" ] && exit 0
+
+hook_dir=$(dirname "$0")
+checker="$hook_dir/branch-name.sh"
+if [ ! -x "$checker" ]; then
+  checker=$(command -v branch-name.sh || true)
+fi
+if [ -z "$checker" ] || [ ! -x "$checker" ]; then
+  # Installing the hook without branch-name.sh is the usual cause.
+  echo "pre-push: branch-name.sh not found next to the hook or on PATH" >&2
+  echo "pre-push: install it beside the hook, or set SKIP_BRANCH_CHECK=1" >&2
+  exit 1
+fi
+
+fail=0
+
+while read -r local_ref local_sha remote_ref _remote_sha; do
+  [ -n "${local_ref:-}" ] || continue
+  case "$local_sha" in *[!0]*) ;; *) continue ;; esac
+  # Check the remote ref: it is the name that lands. `git push origin
+  # feat/a:My_Branch` publishes `My_Branch`, and `HEAD:refs/heads/x` sends
+  # `HEAD` as the local ref. A push to anything but a branch, such as a tag,
+  # is not this hook's business.
+  case "${remote_ref:-}" in
+    refs/heads/*) branch=${remote_ref#refs/heads/} ;;
+    *) continue ;;
+  esac
+  if ! "$checker" --check "$branch"; then
+    fail=1
+  fi
+done
+
+if [ "$fail" -ne 0 ]; then
+  echo "pre-push: rename the branch before pushing, or set SKIP_BRANCH_CHECK=1" >&2
+fi
+
+exit "$fail"
