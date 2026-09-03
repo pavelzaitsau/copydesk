@@ -1,0 +1,4 @@
+#!/bin/sh
+# The branch-names gate, wired to this repository. Enable it once per clone:
+#   git config core.hooksPath .githooks
+exec "$(dirname "$0")/../branch-names/scripts/pre-push" "$@"
