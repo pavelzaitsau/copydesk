@@ -1,0 +1,4 @@
+# This repository is documentation: five skills, four scripts and one hook.
+# Linguist skips prose by default, so the language bar reported Shell and
+# JavaScript and said nothing true about what is here.
+*.md linguist-detectable=true
