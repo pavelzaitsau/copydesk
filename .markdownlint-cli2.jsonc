@@ -1,0 +1,20 @@
+// The structure gate for this repository. Run it from the repository root:
+//
+//   npx markdownlint-cli2
+//
+// The rules come from the markdown-formatting skill and are not repeated here.
+// `customRules` is a cli2 option and cannot ride in the extended markdownlint
+// config, which is the only reason this file names the rule at all.
+{
+  "config": { "extends": "markdown-formatting/assets/.markdownlint.jsonc" },
+  "customRules": ["markdown-formatting/assets/rules/table-row-outside-table.js"],
+  "globs": ["**/*.md"],
+
+  "ignores": [
+    // Symlinks back into this repository. Linting them reports every file twice.
+    ".claude/**",
+    // Build output, and gitignored.
+    "dist/**",
+    "node_modules/**"
+  ]
+}

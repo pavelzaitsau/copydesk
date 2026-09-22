@@ -1,0 +1,36 @@
+# Both gates on every push and pull request. They are the same two commands
+# `scripts/gates.sh` runs locally, so a green run here means a green run there.
+name: gates
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  gates:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      # Vale ships as a Go binary and is pinned, because a style rule that
+      # changes meaning between versions fails a build nobody touched.
+      - name: install vale
+        env:
+          VALE_VERSION: 3.20.0
+        run: |
+          curl -fsSL "https://github.com/errata-ai/vale/releases/download/v${VALE_VERSION}/vale_${VALE_VERSION}_Linux_64-bit.tar.gz" \
+            | tar -xz -C /usr/local/bin vale
+          vale --version
+
+      # 24 and not 20: markdownlint-cli2 declares `node >= 22`, and the runner
+      # itself now runs every action on Node 24.
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+
+      - name: gates
+        run: scripts/gates.sh
