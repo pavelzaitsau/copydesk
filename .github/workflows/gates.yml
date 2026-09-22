@@ -12,7 +12,10 @@ permissions:
 
 jobs:
   gates:
-    runs-on: ubuntu-latest
+    # Pinned, not `ubuntu-latest`: that label migrates to Ubuntu 26 on
+    # 2026-10-19, and a build that changes underneath nobody's commit is a
+    # build nobody trusts. The same reason the Vale version below is pinned.
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
 
