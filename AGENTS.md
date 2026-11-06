@@ -15,13 +15,17 @@ The README says what this repository is, and its More list names each skill with
 <skill>/scripts/           executable code the skill ships
 <skill>/assets/            configuration the skill ships
 <skill>/evals/evals.json   test prompts, where the output is objectively checkable
+<skill>/tests/             manual tools and tests; scripts/package.sh leaves them out of the archive
+<skill>/agents/openai.yaml Codex settings, such as turning off implicit invocation
 .vale.ini                  the prose gate, pointed at the styles docs-linter ships
 .markdownlint-cli2.jsonc   the structure gate, extending the config markdown-formatting ships
 .claude/skills/            symlinks, so an agent here uses these skills on itself
-.githooks/commit-msg       the gate from commit-messages, wired to this repository
+.githooks/commit-msg       the gate from commit-messages, plus the private-name check on the message
+.githooks/pre-commit       the private-name check on the staged lines and paths
 .githooks/pre-push         the gate from branch-names, wired to this repository
+scripts/denylist-check.sh  the private-name check; the list lives outside the repository
 .github/workflows/         the gates, on every push to main and every pull request
-scripts/gates.sh           runs both gates, the same way CI does
+scripts/gates.sh           runs both gates, demo-video's voice-list check and the unit tests, the same way CI does
 scripts/package.sh         builds dist/<skill>.skill
 scripts/skill-reminder.js  PreToolUse hook that names the skill a tool call calls for
 scripts/install.sh         links the skills into all three harness directories and registers the hook
@@ -43,7 +47,7 @@ Enable the hook once per clone:
 git config core.hooksPath .githooks
 ```
 
-Both gates, over everything:
+Both gates, plus demo-video's voice-list check and unit tests, over everything:
 
 ```bash
 scripts/gates.sh
@@ -71,7 +75,8 @@ The settings and the troubleshooting table are in `README.md`.
 
 ## Hard rules
 
-- **English everywhere in files.** Code, prose, comments, commit messages. A chat reply follows the language the human used; a file never does.
+- **English everywhere in files.** Code, prose, comments, commit messages. A chat reply follows the language the human used; a file never does. One exception: text in the language a voice speaks, such as voice lines, the captions and interface of a two-language example, and stop phrases. That text is speech data, not prose.
+- **No private names.** This repository is public. `scripts/denylist-check.sh` checks every commit against a list kept outside the repository, at `~/.config/copydesk/denylist.txt`. Without the list the check warns and lets the commit through, so create it before the first commit in a clone.
 - **Hyphen, never a long dash.** The commit hook rejects one in a message, and `Docs.LongDash` rejects one in any `.md` file the Vale gate reads.
 - **No attribution line in a commit.** No `Co-Authored-By`, no `Generated with`, no session link. A coding agent adds these by default; `commit-messages/references/enforcement.md` says how to stop it.
 - **An agent does not commit or push without permission for that task.** Prepare the change, then propose the message.

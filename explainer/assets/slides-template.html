@@ -1,0 +1,180 @@
+<!doctype html>
+<!-- One example of every slide type in theme.css. Copy the sections a deck needs into slides.html;
+     each <section> is one state, and a slide that changes while the voice talks is several states
+     with the same layout, each id listed in slides.json with its slide and paragraph.
+     references/slides.md says which type draws which content. -->
+<html lang="en"><head><meta charset="utf-8"><title>Slide types</title>
+<link rel="stylesheet" href="theme.css"></head><body>
+
+<section class="slide title" id="t-title"><div class="kicker">Topic · as of 2026-11-05</div>
+  <h1>The title, in at most two lines</h1><div class="sub">One line on what the viewer will understand</div></section>
+
+<section class="slide thesis" id="t-thesis"><div class="kicker">Chapter</div>
+  <div class="big">One sentence that carries the chapter, with the <span class="hl">key term</span> marked.</div></section>
+
+<section class="slide list" id="t-list-1"><h2>Three parts</h2>
+  <ul><li>The first item</li><li class="dim">The second item</li><li class="dim">The third item</li></ul></section>
+<section class="slide list" id="t-list-2"><h2>Three parts</h2>
+  <ul><li class="dim">The first item</li><li>The second item</li><li class="dim">The third item</li></ul></section>
+
+<section class="slide diagram" id="t-diagram-1"><h2>How the parts connect</h2>
+  <div class="row"><div class="box on">Question<small>from the user</small></div><div class="arrow">→</div>
+    <div class="box dim">Search<small>finds passages</small></div><div class="arrow">→</div>
+    <div class="box dim">Answer<small>from the model</small></div></div></section>
+<section class="slide diagram" id="t-diagram-2"><h2>How the parts connect</h2>
+  <div class="row"><div class="box dim">Question<small>from the user</small></div><div class="arrow">→</div>
+    <div class="box on">Search<small>finds passages</small></div><div class="arrow">→</div>
+    <div class="box dim">Answer<small>from the model</small></div></div></section>
+
+<section class="slide compare" id="t-compare"><h2>Two ways</h2>
+  <div class="cols"><div class="card"><h3>The first</h3><ul><li>A strength</li><li>A cost</li></ul></div>
+    <div class="card on"><h3>The second</h3><ul><li>A strength</li><li>A cost</li></ul></div></div></section>
+
+<section class="slide diagram" id="t-loop"><h2>Until the order goes through</h2>
+  <div class="row"><div class="box">Take<small>a worker takes the next order</small></div><div class="arrow">→<small>an order</small></div>
+    <div class="box on">Process<small>charge, pack, label</small></div><div class="arrow">→<small>done</small></div>
+    <div class="box">Acknowledge<small>the queue deletes it</small></div></div>
+  <div class="loopback" style="margin: 28px 787px 0 225px"><span>failed: back into the queue</span></div></section>
+
+<section class="slide hub" id="t-hub-1"><h2>One queue, three services</h2>
+  <div class="ring"><div class="sat"><div class="box">Shop<small>takes the order</small></div><div class="link"></div><small>writes each order</small></div>
+    <div class="sat"><div class="box">Billing<small>charges the card</small></div><div class="link"></div><small>reads the next order</small></div></div>
+  <div class="centre">Order queue<small>holds each order until a worker is free</small></div>
+  <div class="ring below"><div class="sat"><div class="box">Warehouse<small>packs the parcel</small></div><div class="link"></div><small>reads the paid order</small></div></div></section>
+<section class="slide hub" id="t-hub-2"><h2>One queue, three services</h2>
+  <div class="ring"><div class="sat"><div class="box">Shop<small>takes the order</small></div><div class="link"></div><small>writes each order</small></div>
+    <div class="sat"><div class="box on">Billing<small>charges the card</small></div><div class="link"></div><small>reads the next order</small></div></div>
+  <div class="centre">Order queue<small>holds each order until a worker is free</small></div>
+  <div class="ring below"><div class="sat"><div class="box">Warehouse<small>packs the parcel</small></div><div class="link"></div><small>reads the paid order</small></div></div></section>
+
+<section class="slide nest" id="t-nest-1"><h2>What one broker holds</h2>
+  <div class="frame"><div class="label">broker<small>one server</small></div>
+    <div class="row"><div class="frame on"><div class="label">orders<small>the work to do</small></div><div class="col"><div class="box">Waiting orders</div><div class="box">Orders in progress</div></div></div>
+      <div class="frame"><div class="label">dead letters<small>failed for good</small></div><div class="col"><div class="box">Failed orders</div><div class="box">The reason for each</div></div></div></div></div></section>
+<section class="slide nest" id="t-nest-2"><h2>What one broker holds</h2>
+  <div class="frame"><div class="label">broker<small>one server</small></div>
+    <div class="row"><div class="frame"><div class="label">orders<small>the work to do</small></div><div class="col"><div class="box">Waiting orders</div><div class="box">Orders in progress</div></div></div>
+      <div class="frame on"><div class="label">dead letters<small>failed for good</small></div><div class="col"><div class="box">Failed orders</div><div class="box">The reason for each</div></div></div></div></div></section>
+
+<section class="slide layers" id="t-layers"><h2>What a worker runs on</h2>
+  <div class="stack"><div class="layer"><b>Handler</b><span>the shop's own code, one order at a time</span></div>
+    <div class="layer on"><b>Client library</b><span>takes, acknowledges and retries an order</span></div>
+    <div class="layer"><b>Broker</b><span>keeps every order on disk until it is done</span></div></div></section>
+
+<section class="slide steps" id="t-steps-1"><h2>How a queue absorbs a spike</h2>
+  <ol><li class="on"><b>Accept</b><span>the shop writes the order to the queue</span><span class="out">the order is safe</span></li>
+    <li class="dim"><b>Wait</b><span>the order waits its turn</span><span class="out">a line, not an error</span></li>
+    <li class="dim"><b>Take</b><span>a free worker takes the next order</span><span class="out">one order in progress</span></li>
+    <li class="dim"><b>Confirm</b><span>the worker reports it done</span><span class="out">it leaves the queue</span></li></ol>
+  <div class="result later">Every order of the sale ships, and none is lost</div></section>
+<section class="slide steps" id="t-steps-2"><h2>How a queue absorbs a spike</h2>
+  <ol><li><b>Accept</b><span>the shop writes the order to the queue</span><span class="out">the order is safe</span></li>
+    <li class="on"><b>Wait</b><span>the order waits its turn</span><span class="out">a line, not an error</span></li>
+    <li class="dim"><b>Take</b><span>a free worker takes the next order</span><span class="out">one order in progress</span></li>
+    <li class="dim"><b>Confirm</b><span>the worker reports it done</span><span class="out">it leaves the queue</span></li></ol>
+  <div class="result later">Every order of the sale ships, and none is lost</div></section>
+<section class="slide steps" id="t-steps-end"><h2>How a queue absorbs a spike</h2>
+  <ol><li><b>Accept</b><span>the shop writes the order to the queue</span><span class="out">the order is safe</span></li>
+    <li><b>Wait</b><span>the order waits its turn</span><span class="out">a line, not an error</span></li>
+    <li><b>Take</b><span>a free worker takes the next order</span><span class="out">one order in progress</span></li>
+    <li><b>Confirm</b><span>the worker reports it done</span><span class="out">it leaves the queue</span></li></ol>
+  <div class="result">Every order of the sale ships, and none is lost</div></section>
+
+<!-- Sequence: --actors is the column count. A message sets grid-column to its sender and receiver and
+     --span to the columns it covers; .back runs right to left. -->
+<section class="slide sequence" id="t-sequence-1"><h2>Who tells whom</h2>
+  <div class="lanes" style="--actors: 3"><div class="actor">Shop</div><div class="actor">Queue</div><div class="actor">Worker</div>
+    <div class="msg on" style="grid-column: 1 / 3; --span: 2">an order</div>
+    <div class="msg back" style="grid-column: 1 / 3; --span: 2">accepted, in line</div>
+    <div class="msg" style="grid-column: 2 / 4; --span: 2">the next order</div>
+    <div class="msg back" style="grid-column: 2 / 4; --span: 2">done: delete it</div></div></section>
+<section class="slide sequence" id="t-sequence-2"><h2>Who tells whom</h2>
+  <div class="lanes" style="--actors: 3"><div class="actor">Shop</div><div class="actor">Queue</div><div class="actor">Worker</div>
+    <div class="msg" style="grid-column: 1 / 3; --span: 2">an order</div>
+    <div class="msg back on" style="grid-column: 1 / 3; --span: 2">accepted, in line</div>
+    <div class="msg" style="grid-column: 2 / 4; --span: 2">the next order</div>
+    <div class="msg back" style="grid-column: 2 / 4; --span: 2">done: delete it</div></div></section>
+
+<section class="slide timeline" id="t-timeline-1"><h2>How the shop got its queue</h2>
+  <div class="axis"><div class="pt on"><div class="date">March</div><div class="dot"></div><div class="what">One server takes every order</div></div>
+    <div class="pt"><div class="date">June</div><div class="dot"></div><div class="what">A sale overloads it</div></div>
+    <div class="pt"><div class="date">September</div><div class="dot"></div><div class="what">A queue between shop and workers</div></div>
+    <div class="pt"><div class="date">November</div><div class="dot"></div><div class="what">The next sale passes</div></div></div></section>
+<section class="slide timeline" id="t-timeline-2"><h2>How the shop got its queue</h2>
+  <div class="axis"><div class="pt done"><div class="date">March</div><div class="dot"></div><div class="what">One server takes every order</div></div>
+    <div class="pt on"><div class="date">June</div><div class="dot"></div><div class="what">A sale overloads it</div></div>
+    <div class="pt"><div class="date">September</div><div class="dot"></div><div class="what">A queue between shop and workers</div></div>
+    <div class="pt"><div class="date">November</div><div class="dot"></div><div class="what">The next sale passes</div></div></div></section>
+
+<!-- Code: a real file from the research, at most 12 lines, trimmed but never retyped. The claim check
+     skips a state with class code, since its lines quote the file. -->
+<section class="slide code" id="t-code-1"><h2>The worker, as its file sets it up</h2>
+  <div class="file"><div><div class="tab">worker.yaml</div><pre><b>queue: orders</b><i>1</i>
+workers: 4
+retry:
+  attempts: 3
+  backoff: 30s
+dead_letter: orders-failed</pre></div>
+  <div class="callouts"><div class="callout"><i>1</i>The queue the workers read</div></div></div></section>
+<section class="slide code" id="t-code-2"><h2>The worker, as its file sets it up</h2>
+  <div class="file"><div><div class="tab">worker.yaml</div><pre>queue: orders<i>1</i>
+workers: 4
+retry:
+<b>  attempts: 3</b><i>2</i>
+  backoff: 30s
+dead_letter: orders-failed</pre></div>
+  <div class="callouts"><div class="callout"><i>1</i>The queue the workers read</div><div class="callout"><i>2</i>How often a failed order comes back</div></div></div></section>
+
+<!-- Chart: a bar chart (t-bar) and a scatter (t-scatter) in inline SVG; keep the kind the content needs.
+     Every value and label on a bar or a point is a value in claims.md. An axis scale carries class tick,
+     which the claim check skips. Keep width and height equal to the viewBox and text at 32px or more.
+     A bar is value x 1100 / the largest value long; a point sits at x = 160 + value x 1400 / the top of
+     its scale and y = 520 - value x 450 / the top of its scale. -->
+<section class="slide chart" id="t-bar"><h2>A sale day brings six times the orders of a Monday</h2>
+  <svg width="1620" height="640" viewBox="0 0 1620 640" role="img" aria-label="Orders a minute at the peak, by day">
+    <text class="label" x="300" y="80" text-anchor="end">Monday</text><rect class="bar" x="330" y="20" width="183" height="96" rx="8"/><text class="value" x="537" y="82">200</text>
+    <text class="label" x="300" y="220" text-anchor="end">Tuesday</text><rect class="bar" x="330" y="160" width="229" height="96" rx="8"/><text class="value" x="583" y="222">250</text>
+    <text class="label" x="300" y="360" text-anchor="end">Friday</text><rect class="bar" x="330" y="300" width="367" height="96" rx="8"/><text class="value" x="721" y="362">400</text>
+    <text class="label on" x="300" y="500" text-anchor="end">Sale day</text><rect class="bar on" x="330" y="440" width="1100" height="96" rx="8"/><text class="value" x="1454" y="502">1,200</text>
+    <line class="axis" x1="330" y1="0" x2="330" y2="576"/>
+    <text x="330" y="630">orders a minute at the peak</text></svg></section>
+<section class="slide chart" id="t-scatter"><h2>The longer the line, the later the parcel</h2>
+  <svg width="1620" height="640" viewBox="0 0 1620 640" role="img" aria-label="Minutes to ship against orders waiting, by day">
+    <line class="axis" x1="160" y1="70" x2="160" y2="520"/><line class="axis" x1="160" y1="520" x2="1560" y2="520"/>
+    <g class="tick"><text x="160" y="566" text-anchor="middle">0</text><text x="860" y="566" text-anchor="middle">1,000</text><text x="1560" y="566" text-anchor="middle">2,000</text><text x="140" y="306" text-anchor="end">15</text><text x="140" y="81" text-anchor="end">30</text></g>
+    <text x="860" y="626" text-anchor="middle">orders waiting in the queue</text>
+    <text x="190" y="40">minutes to ship</text>
+    <circle class="dot" cx="370" cy="430" r="18"/><text class="label" x="400" y="442">Monday</text>
+    <circle class="dot" cx="650" cy="370" r="18"/><text class="label" x="680" y="382">Friday</text>
+    <circle class="dot" cx="930" cy="295" r="18"/><text class="label" x="960" y="307">Holiday</text>
+    <circle class="dot on" cx="1420" cy="130" r="18"/><text class="label on" x="1390" y="142" text-anchor="end">Sale day</text></svg></section>
+
+<!-- Artefact: real lines from the research, set on the background. A tree with a gloss per line, a check's
+     output under the claim it proves (a statement), and the files a change touched in git-status form.
+     A kicker or a note says when lines are trimmed, simplified or invented for illustration. -->
+<section class="slide artefact" id="t-artefact-tree"><h2>Inside the shop's repository</h2><div class="tree">
+  <div><span class="on">orders/</span> <span class="d">· takes an order, writes it to the queue</span></div>
+  <div><span class="on">worker/</span> <span class="d">· takes it out, charges the card</span></div>
+  <div class="dim"><span>shipping/</span> <span class="d">· sends the parcel</span></div></div></section>
+<section class="slide statement" id="t-statement"><div class="kicker">The check</div>
+  <div class="big">An order without a price <span class="hl">stops the push</span>, at a named line.</div>
+  <div class="tree"><div><span class="on">FAIL</span> orders/schema.yaml: price is required</div><div class="d">order-template.json has no price field</div></div>
+  <div class="note">Illustration of the form, with invented paths</div></section>
+<section class="slide artefact" id="t-artefact-changes"><h2>What the change touched</h2><div class="kicker">A new queue, through configuration only</div><div class="tree">
+  <div><span class="on">M config/queues.yaml</span> <span class="d">configuration: changed</span></div>
+  <div><span class="on">A docs/returns.md</span> <span class="d">content: added</span></div>
+  <div>  worker/ <span class="d">the code: unchanged</span></div></div></section>
+
+<!-- Map: the parts of the whole, shown once in full, then at the start of each chapter about one part,
+     with that part lit and the rest dimmed. --cols sets the columns: 2 for four parts, 3 for six. -->
+<section class="slide diagram map" id="t-map-all"><h2>Four parts of the shop</h2><div class="grid" style="--cols: 2">
+  <div class="box">Shop front<small>takes the order</small></div><div class="box">Queue<small>holds the work</small></div>
+  <div class="box">Worker<small>charges the card</small></div><div class="box">Warehouse<small>packs and ships</small></div></div></section>
+<section class="slide diagram map" id="t-map-queue"><h2>Four parts of the shop</h2><div class="grid" style="--cols: 2">
+  <div class="box dim">Shop front<small>takes the order</small></div><div class="box on">Queue<small>holds the work</small></div>
+  <div class="box dim">Worker<small>charges the card</small></div><div class="box dim">Warehouse<small>packs and ships</small></div></div></section>
+
+<section class="slide summary" id="t-summary"><h2>What to remember</h2>
+  <ol><li>The first takeaway</li><li>The second takeaway</li><li>The third takeaway</li></ol>
+  <div class="src">Sources: sources.md</div></section>
+</body></html>

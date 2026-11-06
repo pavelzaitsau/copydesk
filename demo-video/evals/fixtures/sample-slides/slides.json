@@ -1,0 +1,28 @@
+{
+ "version": 1,
+ "html": "slides.html",
+ "name": "sample",
+ "title": "A queue in two minutes",
+ "lang": "en",
+ "purpose": "client",
+ "speakers": {"host": {"engine": "fake", "voice": "host"}, "expert": {"engine": "fake", "voice": "expert"}},
+ "paragraphs": [
+  {"id": "p1", "chapter": "Opening", "speaker": "host", "text": "Today: why work waits in line, in two minutes."},
+  {"id": "p2", "chapter": "Parts", "speaker": "expert", "text": "A producer adds work. The queue holds it. A worker takes it out."},
+  {"id": "p3", "chapter": "Why", "speaker": "host", "text": "Why bother with the middle part?"},
+  {"id": "p4", "chapter": "Why", "speaker": "expert", "text": "It absorbs spikes, and it lets a failed job retry later."}
+ ],
+ "states": [
+  {"id": "s1a", "slide": "title", "para": "p1"},
+  {"id": "s2a", "slide": "parts", "para": "p2"},
+  {"id": "s2b", "slide": "parts", "para": "p2", "anchor": "The queue holds"},
+  {"id": "s2c", "slide": "parts", "para": "p2", "anchor": "A worker"},
+  {"id": "s3a", "slide": "why", "para": "p3"},
+  {"id": "s3b", "slide": "why", "para": "p4", "anchor": "retry later"}
+ ],
+ "apps": [{"id": "release-desk", "url": "", "owner": "own", "demoData": true}],
+ "inserts": [
+  {"id": "i1", "after": "p2", "chapter": "In the app", "app": "release-desk", "speaker": "host",
+   "scenario": "insert.mjs", "lines": {"i1a": "Here is a queue of checks in a real page."}}
+ ]
+}

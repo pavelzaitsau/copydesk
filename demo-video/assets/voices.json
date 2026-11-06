@@ -1,0 +1,48 @@
+{
+ "en": {
+  "ono_anna": {
+   "engine": "qwen3",
+   "voice": "ono_anna",
+   "sex": "f",
+   "strength": 64
+  },
+  "sohee": {
+   "engine": "qwen3",
+   "voice": "sohee",
+   "sex": "f",
+   "strength": 59
+  },
+  "nicole": {
+   "engine": "kokoro",
+   "voice": "af_nicole",
+   "sex": "f",
+   "strength": 56
+  },
+  "voxcpm": {
+   "engine": "voxcpm2",
+   "voice": "default",
+   "sex": "m",
+   "strength": 70
+  },
+  "higgs3": {
+   "engine": "higgs3",
+   "voice": "default",
+   "sex": "m",
+   "strength": 59
+  }
+ },
+ "ru": {
+  "serena": {
+   "engine": "qwen3",
+   "voice": "serena",
+   "sex": "f",
+   "strength": 48
+  },
+  "higgs3": {
+   "engine": "higgs3",
+   "voice": "default",
+   "sex": "m",
+   "strength": 51
+  }
+ }
+}

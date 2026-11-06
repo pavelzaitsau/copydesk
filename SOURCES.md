@@ -83,8 +83,21 @@ These links were checked on 2026-10-30.
 | [Kokoro-82M](https://huggingface.co/hexgrad/Kokoro-82M), hexgrad | The offline voice model, its voice names and the language prefix in each name. |
 | [eSpeak NG](https://github.com/espeak-ng/espeak-ng) | The phonemiser Kokoro calls, installed from Homebrew because the Python wheel's built-in path is wrong. |
 | [ffmpeg loudnorm filter](https://ffmpeg.org/ffmpeg-filters.html#loudnorm) | The loudness target in `mix.py`: -16 LUFS integrated, -2 dBTP true peak. |
+| [mlx-audio](https://github.com/Blaizzy/mlx-audio) 0.6.4, Prince Canuma | The MLX runtime behind every engine except Kokoro, and each model's `generate` arguments. Checked on 2026-11-05. |
+| [Artificial Analysis open-weights TTS leaderboard](https://artificialanalysis.ai/text-to-speech/leaderboard/provider-voice/open-weights) | The shortlist of engines, ranked by blind listener preference. Checked on 2026-11-05. |
+| The model cards: [Qwen3-TTS](https://huggingface.co/Qwen/Qwen3-TTS-12Hz-1.7B-CustomVoice), [VoxCPM2](https://huggingface.co/openbmb/VoxCPM2), [Chatterbox](https://huggingface.co/ResembleAI/chatterbox), [OmniVoice](https://huggingface.co/k2-fsa/OmniVoice), [Fish Audio S2 Pro](https://huggingface.co/fishaudio/s2-pro), [Fish Audio Drama 3](https://huggingface.co/fishaudio/drama-3), [Higgs TTS 3](https://huggingface.co/bosonai/higgs-tts-3-4b) | The languages each engine speaks in the engine table. Checked on 2026-11-05. |
+| The weights' licences: [Kokoro, Apache-2.0](https://huggingface.co/hexgrad/Kokoro-82M), [Qwen3-TTS, Apache-2.0](https://huggingface.co/Qwen/Qwen3-TTS-12Hz-1.7B-CustomVoice), [VoxCPM2, Apache-2.0](https://huggingface.co/openbmb/VoxCPM2), [Chatterbox, MIT](https://huggingface.co/ResembleAI/chatterbox), [OmniVoice, CC-BY-NC](https://huggingface.co/k2-fsa/OmniVoice) (the model card's License section), [Fish Audio Research License](https://huggingface.co/fishaudio/s2-pro/blob/main/LICENSE.md), [Fish Audio Community License](https://huggingface.co/fishaudio/drama-3/blob/main/LICENSE), [Higgs TTS 3 licence](https://huggingface.co/bosonai/higgs-tts-3-4b/blob/main/LICENSE) | The licence class of each engine in `ENGINES`, and `demo-video/NOTICE`. Checked on 2026-11-05. |
 
 The overlays, the narration-driven pacing and the rules under "Rules that came from failed takes" are not from a published source. Each one came from a take that failed without it.
+
+## explainer
+
+| Source | What it gave |
+| --- | --- |
+| [ASD-STE100 Simplified Technical English](https://www.asd-ste100.org/), ASD, Brussels, Issue 9 (2025) | The 20-word sentence limit in `lint_script.py`, the limit the specification sets for procedures. A script for the ear needs the shorter of its two limits. |
+| [demo-video](demo-video/SKILL.md), this repository | The voice, the Whisper check, the slide runner and the MP4. |
+
+The pace of 140 words a minute in English and 120 in Russian, the 25-word quotation limit, the expert's share of 60 to 80% and the 40-second limit per slide are not from a published source. They are starting values that each run checks against the measured length.
 
 ## This repository
 

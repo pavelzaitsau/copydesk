@@ -49,6 +49,7 @@ The script symlinks every skill into the directories that Claude Code, Codex and
 - [`commit-messages`](commit-messages/SKILL.md) - Conventional Commits 1.0.0, ticket ids, breaking changes, the commit gate. Read it before writing or squashing a commit.
 - [`branch-names`](branch-names/SKILL.md) - the type prefix, the ticket id, the slug, the length budget, the push gate. Read it before creating or renaming a branch.
 - [`demo-video`](demo-video/SKILL.md) - a scripted Playwright demo of a web application, recorded to MP4 with an optional offline voice-over. Read it before recording a demo.
+- [`explainer`](explainer/SKILL.md) - a narrated explainer video on a topic: research, a fact-checked script, slides, then `demo-video` records it. Invoke it by name before making an explainer or a video podcast.
 - [AGENTS.md](AGENTS.md) - the gates, the reminder hook, and the rules for changing a skill. Read it before changing anything here.
 - [SOURCES.md](SOURCES.md) - the specification or article each skill is built on. Read it when a rule looks arbitrary.
-- [LICENSE](LICENSE) - MIT-0. Copy it, vendor it, sell it; no attribution required.
+- [LICENSE](LICENSE) - MIT-0. Copy it, vendor it, sell it; no attribution required. MIT-0 covers this repository's code and text. The voice models `demo-video` can download come under their own licences, and some forbid commercial use: [demo-video/NOTICE](demo-video/NOTICE) lists them.

@@ -9,6 +9,8 @@
   "config": { "extends": "markdown-formatting/assets/.markdownlint.jsonc" },
   "customRules": ["markdown-formatting/assets/rules/table-row-outside-table.js"],
   "globs": ["**/*.md"],
+  // Skip what git ignores: nested node_modules with their own .md files, and _notes/ drafts.
+  "gitignore": true,
 
   "ignores": [
     // Symlinks back into this repository; scripts/gates.sh says why they are skipped.

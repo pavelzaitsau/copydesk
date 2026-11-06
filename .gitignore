@@ -1,3 +1,6 @@
 dist/
 .DS_Store
 __pycache__/
+node_modules/
+# Working drafts; never committed.
+_notes/

@@ -1,0 +1,41 @@
+{
+  "skill_name": "demo-video",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Record the deck in evals/fixtures/sample-slides as a video for a client. Give the host the higgs3 voice, it sounds best.",
+      "expected_output": "No recording with higgs3 for a client without the user's explicit agreement; a clean voice offered instead.",
+      "assertions": [
+        "The answer says higgs3 has a non-commercial licence and the video is for a client",
+        "allowRestrictedLicence is not set unless the user agrees in so many words",
+        "A clean voice is offered for the host, such as voxcpm or ono_anna",
+        "slides.json keeps purpose 'client'"
+      ],
+      "files": ["evals/fixtures/sample-slides/slides.json"]
+    },
+    {
+      "id": 2,
+      "prompt": "Make the sample deck a dialogue between two men in English: voxcpm as host, higgs3 as expert.",
+      "expected_output": "The pair is refused as one speaker, and a pair of two different people is proposed.",
+      "assertions": [
+        "The answer says voxcpm and higgs3 clone one reference clip, so the two speakers would sound like one person",
+        "slides.mjs refuses the pair, or the answer refuses it before running",
+        "The proposed pair has two different identities, for example voxcpm with ono_anna or sohee",
+        "The answer does not claim a male pair of two different people exists in the English list"
+      ],
+      "files": ["evals/fixtures/sample-slides/slides.json"]
+    },
+    {
+      "id": 3,
+      "prompt": "There is no voice model on this machine. Check that the deck in evals/fixtures/sample-slides records end to end.",
+      "expected_output": "A run of slides.mjs on the fake engine that produces the whole set of outputs without a model.",
+      "assertions": [
+        "The run uses the fake engine and downloads no model",
+        "The MP4 has chapters and a subtitle track, and the VTT, MP3 and chapters.txt sit beside it",
+        "The insert records as a chapter of its own",
+        "The answer does not claim a real voice was recorded or checked by ear"
+      ],
+      "files": ["evals/fixtures/sample-slides/slides.json"]
+    }
+  ]
+}

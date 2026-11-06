@@ -1,6 +1,5 @@
-# Both gates on every push to `main` and every pull request. They are the same
-# two commands `scripts/gates.sh` runs locally, so a green run here means a
-# green run there.
+# The gates on every push to `main` and every pull request, through the same
+# `scripts/gates.sh` as locally, so a green run here means a green run there.
 # A pull request also runs the commit and branch hooks, in the job below.
 name: gates
 

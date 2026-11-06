@@ -1,0 +1,18 @@
+demo-video's own code is MIT-0, see LICENSE.txt. The voice models it can download and run are
+not part of this skill and come under their own licences. The texts for the models whose
+licences ask a repository that uses them to carry a copy are in licenses/.
+
+Fish Audio S2 Pro (engine fish-s2):
+  This model is licensed under the Fish Audio Research License, Copyright © 39 AI, INC. All Rights Reserved.
+  licenses/fish-audio-research-license.txt
+  Built with Fish Audio.
+
+Fish Audio Drama 3 (engine drama3):
+  These Fish Audio Materials are licensed under the Fish Audio Community License, Version 1.0. Copyright © 39 AI, INC. All Rights Reserved.
+  licenses/fish-audio-community-license.txt
+  Built with Fish Audio.
+
+Higgs Audio V3, renamed Higgs TTS 3 (engine higgs3):
+  Boson Higgs TTS 3 is licensed under the Boson Higgs TTS 3 Research and Non-Commercial License, Copyright (c) Boson AI USA, Inc. All Rights Reserved.
+  licenses/higgs-tts-3-license.txt
+  Built with Higgs TTS 3 licensed from Boson AI USA, Inc.

@@ -16,7 +16,8 @@ for name in "${targets[@]}"; do
   [ -f "$name/SKILL.md" ] || { echo "$name: no SKILL.md" >&2; exit 1; }
   rm -f "dist/$name.skill"
   # Only what the repository tracks: a stray __pycache__ or .DS_Store stays out.
-  git ls-files -z -- "$name" \
+  # tests/ holds manual tools and fixtures for this repository, not for the skill's users.
+  git ls-files -z -- "$name" ":(exclude)$name/tests/**" \
     | xargs -0 zip -q -X "dist/$name.skill"
   echo "dist/$name.skill"
 done

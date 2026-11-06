@@ -1,0 +1,274 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "title": "slides.json, the input of scripts/slides.mjs",
+ "type": "object",
+ "required": [
+  "version",
+  "html",
+  "speakers",
+  "paragraphs",
+  "states"
+ ],
+ "properties": {
+  "version": {
+   "const": 1
+  },
+  "html": {
+   "type": "string",
+   "description": "The slide page, relative to slides.json. Every state is an element of 1920x1080 whose id is the state's id."
+  },
+  "name": {
+   "type": "string",
+   "description": "File name of the MP4, MP3 and VTT",
+   "default": "slides"
+  },
+  "title": {
+   "type": "string"
+  },
+  "lang": {
+   "enum": [
+    "en",
+    "ru"
+   ],
+   "default": "en"
+  },
+  "purpose": {
+   "enum": [
+    "personal",
+    "team",
+    "client"
+   ],
+   "default": "client"
+  },
+  "allowRestrictedLicence": {
+   "type": "boolean",
+   "default": false
+  },
+  "allowFailedTakes": {
+   "type": "boolean",
+   "default": false
+  },
+  "speakers": {
+   "type": "object",
+   "description": "Speaker -> a voice name from assets/voices.json, or {engine, voice}. Two speakers must be two different people.",
+   "additionalProperties": {
+    "oneOf": [
+     {
+      "type": "string"
+     },
+     {
+      "type": "object",
+      "required": [
+       "engine",
+       "voice"
+      ],
+      "properties": {
+       "engine": {
+        "type": "string"
+       },
+       "voice": {
+        "type": "string"
+       }
+      }
+     }
+    ]
+   }
+  },
+  "takes": {
+   "type": "integer",
+   "minimum": 1,
+   "default": 1,
+   "maximum": 5
+  },
+  "speed": {
+   "description": "The engine's own speed setting, at synthesis: one number, or one per speaker. 1.0 by default",
+   "oneOf": [
+    {
+     "type": "number",
+     "minimum": 0.5,
+     "maximum": 2.0
+    },
+    {
+     "type": "object",
+     "additionalProperties": {
+      "type": "number",
+      "minimum": 0.5,
+      "maximum": 2.0
+     }
+    }
+   ]
+  },
+  "tempo": {
+   "description": "Speed-up after synthesis without a pitch change, 0.8 to 1.3: one number, or one per speaker. 1.0 by default",
+   "oneOf": [
+    {
+     "type": "number",
+     "minimum": 0.8,
+     "maximum": 1.3
+    },
+    {
+     "type": "object",
+     "additionalProperties": {
+      "type": "number",
+      "minimum": 0.8,
+      "maximum": 1.3
+     }
+    }
+   ]
+  },
+  "gaps": {
+   "type": "object",
+   "description": "Silence in seconds",
+   "properties": {
+    "lead": {
+     "type": "number",
+     "minimum": 0
+    },
+    "paragraph": {
+     "type": "number",
+     "minimum": 0
+    },
+    "chapter": {
+     "type": "number",
+     "minimum": 0
+    },
+    "tail": {
+     "type": "number",
+     "minimum": 0
+    }
+   }
+  },
+  "apps": {
+   "type": "array",
+   "description": "The applications an insert may open, from the brief",
+   "items": {
+    "type": "object",
+    "required": [
+     "id",
+     "owner",
+     "demoData"
+    ],
+    "properties": {
+     "id": {
+      "type": "string"
+     },
+     "url": {
+      "type": "string"
+     },
+     "owner": {
+      "type": "string",
+      "description": "Who owns the application: 'own', or the client the brief names"
+     },
+     "demoData": {
+      "type": "boolean",
+      "description": "true when the application holds only demo data; an insert needs it"
+     }
+    }
+   }
+  },
+  "paragraphs": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "required": [
+     "id",
+     "chapter",
+     "speaker",
+     "text"
+    ],
+    "properties": {
+     "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]+$"
+     },
+     "chapter": {
+      "type": "string"
+     },
+     "speaker": {
+      "type": "string"
+     },
+     "text": {
+      "type": "string",
+      "description": "What the viewer reads in the subtitles"
+     },
+     "say": {
+      "type": "string",
+      "description": "What the voice reads, with the pronunciation dictionary applied; text when absent"
+     }
+    }
+   },
+   "minItems": 1
+  },
+  "states": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "required": [
+     "id",
+     "slide",
+     "para"
+    ],
+    "properties": {
+     "id": {
+      "type": "string"
+     },
+     "slide": {
+      "type": "string",
+      "description": "The slide this state belongs to; slides.pdf shows each slide's last state"
+     },
+     "para": {
+      "type": "string"
+     },
+     "anchor": {
+      "type": "string",
+      "description": "A phrase of the paragraph's say; 'phrase#2' for its second occurrence. Empty: the paragraph's start"
+     }
+    }
+   },
+   "minItems": 1
+  },
+  "inserts": {
+   "type": "array",
+   "description": "Browser recordings, each a chapter of its own after the paragraph that ends a chapter",
+   "items": {
+    "type": "object",
+    "required": [
+     "id",
+     "after",
+     "chapter",
+     "app",
+     "speaker",
+     "scenario",
+     "lines"
+    ],
+    "properties": {
+     "id": {
+      "type": "string"
+     },
+     "after": {
+      "type": "string"
+     },
+     "chapter": {
+      "type": "string"
+     },
+     "app": {
+      "type": "string"
+     },
+     "speaker": {
+      "type": "string"
+     },
+     "scenario": {
+      "type": "string",
+      "description": "A .mjs module, relative to slides.json, exporting async (kit) => {} that resets its data in finally"
+     },
+     "lines": {
+      "type": "object",
+      "additionalProperties": {
+       "type": "string"
+      }
+     }
+    }
+   }
+  }
+ }
+}

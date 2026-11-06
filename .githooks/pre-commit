@@ -1,0 +1,4 @@
+#!/bin/sh
+# The private-name gate, wired to this repository. Enable it once per clone:
+#   git config core.hooksPath .githooks
+exec "$(dirname "$0")/../scripts/denylist-check.sh" --staged

@@ -1,0 +1,49 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Release desk</title>
+<style>
+body{margin:0;font:16px/1.5 -apple-system,Helvetica,Arial,sans-serif;background:#f4f6f9;color:#1d2733}
+header{background:#fff;border-bottom:1px solid #dde3ea;padding:18px 40px;display:flex;align-items:center;gap:16px}
+header h1{font-size:22px;margin:0}header .v{color:#6b7785}
+main{padding:32px 40px;max-width:1400px}
+.bar{display:flex;gap:12px;align-items:center;margin-bottom:20px}
+button{font:600 16px -apple-system,Helvetica,sans-serif;padding:10px 20px;border-radius:8px;border:0;background:#2563eb;color:#fff;cursor:pointer}
+button.sec{background:#e7ecf3;color:#1d2733}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+th,td{text-align:left;padding:14px 18px;border-bottom:1px solid #eef1f5}th{background:#f8fafc;color:#56616e;font-size:14px;text-transform:uppercase;letter-spacing:.04em}
+.st{font-weight:600}.st.wait{color:#8a94a1}.st.ok{color:#15803d}.st.fail{color:#b91c1c}
+.sum{margin-top:20px;font-size:20px;font-weight:600}
+</style></head><body>
+<header><h1 id="title"></h1><span class="v">v2.4.0</span></header>
+<main>
+<div class="bar"><button id="run"></button><button class="sec" id="ship" disabled></button></div>
+<table><thead><tr><th id="h1"></th><th id="h2"></th><th id="h3"></th></tr></thead><tbody id="rows"></tbody></table>
+<div class="sum" id="sum"></div>
+</main>
+<script>
+const L = new URLSearchParams(location.search).get('lang') === 'ru' ? {
+  title: 'Релизный стол', run: 'Запустить проверки', ship: 'Выпустить релиз', h: ['Проверка', 'Владелец', 'Статус'],
+  wait: 'ожидает', ok: 'пройдена', fail: 'упала', fixed: 'исправлена', sum: (n, f) => `Пройдено ${n} из 5, упало: ${f}`, shipped: 'Релиз 2.4.0 выпущен',
+  rows: [['Модульные тесты', 'Анна'], ['Миграции базы', 'Игорь'], ['Проверка доступности', 'Мария'], ['Нагрузочный тест', 'Олег'], ['Лицензии зависимостей', 'Катя']],
+} : {
+  title: 'Release desk', run: 'Run checks', ship: 'Ship release', h: ['Check', 'Owner', 'Status'],
+  wait: 'waiting', ok: 'passed', fail: 'failed', fixed: 'fixed', sum: (n, f) => `${n} of 5 passed, ${f} failed`, shipped: 'Release 2.4.0 shipped',
+  rows: [['Unit tests', 'Anna'], ['Database migrations', 'Igor'], ['Accessibility audit', 'Maria'], ['Load test', 'Oleg'], ['Dependency licences', 'Kate']],
+};
+const $ = (id) => document.getElementById(id);
+$('title').textContent = L.title; $('run').textContent = L.run; $('ship').textContent = L.ship;
+L.h.forEach((t, i) => $('h' + (i + 1)).textContent = t);
+$('rows').innerHTML = L.rows.map(([c, o], i) => `<tr data-i="${i}"><td>${c}</td><td>${o}</td><td class="st wait">${L.wait}</td></tr>`).join('');
+const st = (i) => document.querySelector(`tr[data-i="${i}"] .st`);
+$('run').onclick = async () => {
+  for (let i = 0; i < 5; i++) {
+    await new Promise((r) => setTimeout(r, 450));
+    const bad = i === 3;
+    st(i).className = 'st ' + (bad ? 'fail' : 'ok'); st(i).textContent = bad ? L.fail : L.ok;
+  }
+  $('sum').textContent = L.sum(4, 1); $('sum').dataset.done = '1';
+};
+document.querySelector('tr[data-i="3"]').onclick = () => {
+  st(3).className = 'st ok'; st(3).textContent = L.fixed; $('sum').textContent = L.sum(5, 0); $('ship').disabled = false;
+};
+$('ship').onclick = () => { $('sum').textContent = L.shipped; $('sum').dataset.shipped = '1'; };
+</script></body></html>
